@@ -22,7 +22,7 @@ def dirScan(work_dir, prefix=None, postfix=None):
         # for dir in dirnames:
         #     fileDirList.append(os.path.join(parent, dir))
         for filename in filenames:
-             if prefix and postfix:
+            if prefix and postfix:
                 if filename.startswith(prefix) and filename.endswith(postfix):
                     filePathList.append(os.path.join(parent, filename))
             elif prefix:
