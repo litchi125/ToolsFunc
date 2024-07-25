@@ -6,34 +6,53 @@
 import os
 
 
-def dirScan(work_dir, prefix=None, postfix=None):
+def dirScan(work_dir, getType="both", recursion=True, prefix=None, postfix=None):
     """
-    通过os.work()内置模块函数，进行文件遍历
-    :param work_dir: 目标路径
-    :param prefix: 需要筛选的文件前缀
-    :param postfix: 需要筛选的文件后缀
-    :return:
+    目录遍历工具
+    @param work_dir: 待遍历目录
+    @param getType: 获取文件夹路径"dir"、文件"file"、都有"both"
+    @param recursion: 是否递归遍历
+    @param prefix: 检查文件前缀
+    @param postfix: 检查文件后缀
+    @return:
     """
+
     # filePathList：返回文件绝对路径列表
     filePathList = []
     # fileDirList：返回文件夹绝对路径
     fileDirList = []
+    getType = str(getType).lower()
+
+    if getType not in ["dir", "file", "both"]:
+        return ["[!]ERROR: param 'getType'not in ['dir','file','both']"]
+
+    # 最终返回列表
+    resultList = []
     for parent, dirnames, filenames in os.walk(work_dir):
-        # for dir in dirnames:
-        #     fileDirList.append(os.path.join(parent, dir))
-        for filename in filenames:
-            if prefix and postfix:
-                if filename.startswith(prefix) and filename.endswith(postfix):
-                    filePathList.append(os.path.join(parent, filename))
-            elif prefix:
-                if filename.startswith(prefix):
-                    filePathList.append(os.path.join(parent, filename))
-            elif postfix:
-                if filename.endswith(postfix):
-                    filePathList.append(os.path.join(parent, filename))
-            else:
-                filePathList.append(os.path.join(parent, filename))
-    return filePathList
+        if getType != "file":
+            for dir in dirnames:
+                resultList.append(os.path.join(parent, dir))
+        if getType != "dir":
+            for filename in filenames:
+                if prefix and postfix:
+                    if filename.startswith(prefix) and filename.endswith(postfix):
+                        resultList.append(os.path.join(parent, filename))
+                elif prefix:
+                    if filename.startswith(prefix):
+                        resultList.append(os.path.join(parent, filename))
+                elif postfix:
+                    if filename.endswith(postfix):
+                        resultList.append(os.path.join(parent, filename))
+                else:
+                    resultList.append(os.path.join(parent, filename))
+
+        if recursion == False:
+            # 清空 dirnames 列表，防止 os.walk 进入子目录
+            dirnames[:] = []
+            break  # 只遍历第一层，之后跳出循环
+
+    return resultList
+
 
 
 
