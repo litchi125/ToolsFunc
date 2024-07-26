@@ -6,11 +6,11 @@
 import os
 
 
-def dirScan(work_dir, getType="both", recursion=True, prefix=None, postfix=None):
+def dirScan(work_dir, getType="file", recursion=True, prefix=None, postfix=None):
     """
     目录遍历工具
     @param work_dir: 待遍历目录
-    @param getType: 默认为"both"；[ 获取文件夹路径"dir"、文件"file"、都有"both" ]
+    @param getType: 默认为"file"；[ 获取文件夹路径"dir"、文件"file"、都有"both" ]
     @param recursion: 是否递归遍历，默认为True； [ 若为True则递归；若为数字，则为递归深度；若为False，则不递归 ]
     @param prefix: 检查文件前缀
     @param postfix: 检查文件后缀
